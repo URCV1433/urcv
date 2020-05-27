@@ -49,7 +49,9 @@ td span {
 }
 
 .ant-statistic-title {
-    /*color: #fff !important;*/
+    margin-bottom: 4px;
+    color: #421710;
+    font-size: 14px;
 }
 
 .spanx {
@@ -100,6 +102,7 @@ td span {
 
 .App {
     background-color: #000000;
+    color: #421710;
 }
 
 .header-n {
@@ -118,16 +121,16 @@ td span {
 }
 
 .account-nr {
-    /*height: 100px;*/
-    /*border-radius: 15px;*/
     padding: 15px 10px;
     background: #dbbf7a;
+    margin-top: 30px;
 }
 
 .contract-n {
     background-color: #dbbf7a;
     padding: 5px 15px;
     border-radius: 12px;
+    margin-top: 30px;
 }
 
 .contract-dn {
@@ -174,20 +177,19 @@ td span {
 }
 
 .trapezoid {
-    margin-bottom: 10px;
     margin-left: auto;
     margin-right: auto;
-    border-radius: 30px;
-    border-bottom: 35px solid #dbbf7a;
-    width: 170px;
-    float: none;
-    font-weight: bold;
-    color: #ee1231;
-
+    border-radius:30px;
+    background-color:#dbbf7a;
+    text-align: center;
+    width:170px;
+    font-weight:bold;
+    line-height:35px;
+    color:#d81f07;
 }
 
 .ant-btn-primary {
-    color: #fff;
+    color: #d81f07;
     background-color: #3f2908 !important;
     border-color: #3f2908 !important;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.12);

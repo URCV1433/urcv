@@ -686,16 +686,7 @@ class ContentPage extends Component {
                         <img src={Head} width={"100%"}/>
                     </div>
                     <div className="account-n">
-                        <div className="trapezoid" style={{textAlign: 'center'}}>
-                            <div style={{
-                                float: 'left',
-                                fontSize: '14px',
-                                margin: "5px",
-                                paddingLeft: '10px',
-                                color: '#fff'
-                            }}>{Lang[this.state.lang].account.title.utxo}</div>
-                        </div>
-
+                        <div className="trapezoid">{Lang[this.state.lang].account.title.utxo}</div>
                         <div className={"account-nr"}>
                             <Row>
                                 <Col span={16}>
@@ -732,15 +723,7 @@ class ContentPage extends Component {
                     </div>
                     <div className={"contract-tn"}>
                         <div className={"contract-dn"}>
-                            <div className="trapezoid" style={{textAlign: 'center'}}>
-                                <div style={{
-                                    float: 'left',
-                                    fontSize: '14px',
-                                    margin: "5px",
-                                    paddingLeft: '10px'
-                                    // color: '#fff'
-                                }}>{Lang[this.state.lang].account.title.contract}</div>
-                            </div>
+                            <div className="trapezoid">{Lang[this.state.lang].account.title.contract}</div>
                             <div className="contract-n">
 
                                 <div style={{textAlign: 'center'}}>
@@ -885,16 +868,7 @@ class ContentPage extends Component {
 
                     <div className={"contract-tn"}>
                         <div className={"contract-dn"}>
-                            <div className="trapezoid" style={{textAlign: 'center'}}>
-                                <div style={{
-                                    float: 'left',
-                                    fontSize: '14px',
-                                    margin: "5px",
-                                    paddingLeft: '10px'
-                                    // color: '#fff'
-                                }}>冠军奖池
-                                </div>
-                            </div>
+                            <div className="trapezoid">冠军奖池</div>
                             <div className="contract-n">
                                 <div style={{textAlign: 'center'}}>
                                     <Row>
