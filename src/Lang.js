@@ -38,7 +38,7 @@ class Lang {
                 staticReward: "静态返还",
                 recommendReward: "推荐奖",
                 nobilityReward: "星级奖",
-                vipReward: "VIP奖",
+                vipReward: "冠军奖",
                 viewCode: "查看智能合约",
 
             },
