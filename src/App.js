@@ -181,7 +181,8 @@ class ContentPage extends Component {
             ct_details: {},
 
             lang: "zh_CN",
-            winnerList: []
+            winnerList: [],
+            winnerPool: 0,
         }
     }
 
@@ -314,15 +315,13 @@ class ContentPage extends Component {
         that.callMethod("winnerList", [], function (res) {
             let values = res[1];
             let codes = res[0].split(",");
-            for (var i = 0; i < 6; i++) {
-                if (values[i] == 0) {
-                    break;
-                }
+            for (var i = 0; i < codes.length; i++) {
                 winnerList.push({code: codes[i], value: values[i]});
             }
-            console.log("winnerList", winnerList);
+
             that.setState({
-                winnerList: winnerList
+                winnerList: winnerList,
+                winnerPool: res[2]
             })
         });
     }
@@ -669,10 +668,15 @@ class ContentPage extends Component {
 
         // let showCountDown = new Date(staticTimestamp * 1000).getUTCDate() === parseInt(new Date().getUTCDate());
         let showCountDown = Math.ceil((staticTimestamp * 1000) / (600 * 1000)) === nextShareTime() / (600 * 1000);
-        let winners = that.state.winnerList.map(function (item,index) {
+        let index = 0;
+        let winners = that.state.winnerList.map(function (item, index) {
+            if (item.code === that.state.ct_details.id) {
+                index = index + 1;
+            }
             return (
                 <Row key={index}>
-                    <Col span={8}><img src={require("./URCV_li_"+(index+1)+".png")} style={{width:'30px',height:'25px'}}/></Col>
+                    <Col span={8}><img src={require("./URCV_li_" + (index + 1) + ".png")}
+                                       style={{width: '30px', height: '25px'}}/></Col>
                     <Col span={8}>{item.code}</Col>
                     <Col span={8}>{new BigNumber(item.value).dividedBy(decimal).toFixed(2)}</Col>
                 </Row>
@@ -877,6 +881,21 @@ class ContentPage extends Component {
                                         <Col span={8}>奖金</Col>
                                     </Row>
                                     {winners}
+                                </div>
+                                <Divider dashed={true}/>
+                                <div>
+                                    <div>
+                                        <span>{"今日冠军奖池(SERO)"}</span><span>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span>
+                                    </div>
+                                    <div><span>{"我的排名"}</span>{
+                                        index > 0 ? <span>第{1}名</span> :
+                                            <span>无排名</span>
+                                    }
+                                    </div>
+                                    <div><span>{"我的奖金(SERO)"}</span>{
+                                        index > 0 &&
+                                        <span>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
+                                    }</div>
                                 </div>
                             </div>
                         </div>
