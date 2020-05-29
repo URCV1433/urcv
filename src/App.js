@@ -669,7 +669,7 @@ class ContentPage extends Component {
         }
 
         // let showCountDown = new Date(staticTimestamp * 1000).getUTCDate() === parseInt(new Date().getUTCDate());
-        let showCountDown = Math.ceil((staticTimestamp * 1000) / (600 * 1000)) === nextShareTime() / (600 * 1000);
+        let showCountDown = Math.ceil((staticTimestamp * 1000) / (1200 * 1000)) === nextShareTime() / (1200 * 1000);
         let index = 0;
         let winners = that.state.winnerList.map(function (item, index) {
             if (item.code === that.state.ct_details.id) {
@@ -1078,8 +1078,8 @@ function nextShareTime() {
     // let tz = new Date().getTimezoneOffset() / 60;
     // return d.getTime() + (-tz) * 60 * 60 * 1000;
 
-    let time = d.getTime() + 600 * 1000;
-    time = time - time % (600 * 1000);
+    let time = d.getTime() + 1200 * 1000;
+    time = time - time % (1200 * 1000);
     return time;
 }
 
