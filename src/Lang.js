@@ -181,6 +181,18 @@ class Lang {
                 close: "Close",
                 copy: "Copy",
             },
+            winner :{
+                title:"冠军奖池",
+                ranking:"排名",
+                code:"编号",
+                reward:"奖金",
+                poolValue:"今日冠军奖池(SERO)",
+                myplace:"我的排名",
+                myreward:"我的奖金(SERO)",
+                countDown:"今日冠军开奖倒计时",
+                noplace:"无排名",
+
+            },
             modal: {
                 deposit: {
                     title: "Deposit",
@@ -304,6 +316,18 @@ Four Star          In addition to the largest direct sales performance, the tota
                 withdraw: "Снять со счета",
                 close: "близко",
                 copy: "копия",
+            },
+            winner :{
+                title:"冠军奖池",
+                ranking:"排名",
+                code:"编号",
+                reward:"奖金",
+                poolValue:"今日冠军奖池(SERO)",
+                myplace:"我的排名",
+                myreward:"我的奖金(SERO)",
+                countDown:"今日冠军开奖倒计时",
+                noplace:"无排名",
+
             },
             modal: {
                 deposit: {
@@ -447,6 +471,18 @@ c) Когда результаты прямых доходов от рефера
                 close: "닫기",
                 copy: "복사",
             },
+            winner :{
+                title:"冠军奖池",
+                ranking:"排名",
+                code:"编号",
+                reward:"奖金",
+                poolValue:"今日冠军奖池(SERO)",
+                myplace:"我的排名",
+                myreward:"我的奖金(SERO)",
+                countDown:"今日冠军开奖倒计时",
+                noplace:"无排名",
+
+            },
             modal: {
                 deposit: {
                     title: "예금",
@@ -577,6 +613,18 @@ d) 추천 소득은 매일 정산되며, 인출 및 재투자가 가능합니다
                 withdraw: "引き出す",
                 close: "閉じる",
                 copy: "複写",
+            },
+            winner :{
+                title:"冠军奖池",
+                ranking:"排名",
+                code:"编号",
+                reward:"奖金",
+                poolValue:"今日冠军奖池(SERO)",
+                myplace:"我的排名",
+                myreward:"我的奖金(SERO)",
+                countDown:"今日冠军开奖倒计时",
+                noplace:"无排名",
+
             },
             modal: {
                 deposit: {

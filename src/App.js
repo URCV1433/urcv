@@ -888,7 +888,7 @@ class ContentPage extends Component {
                                 <div>
                                     <div className="countDown">
                                         <Row style={{color: "red"}}>
-                                            <Col span={14} style={{textAlign: 'right', fontSize: '20px'}}>
+                                            <Col span={14} style={{textAlign: 'right', fontSize: '16px'}}>
                                                 <span>{Lang[this.state.lang].winner.countDown}:</span></Col>
                                             <Col span={10}><Countdown title="" format="HH:mm:ss"
                                                                       value={parseFloat(countDown)}/></Col>
