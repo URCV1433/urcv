@@ -313,10 +313,12 @@ class ContentPage extends Component {
         let that = this;
         let winnerList = [];
         that.callMethod("winnerList", [], function (res) {
-            let values = res[1];
-            let codes = res[0].split(",");
-            for (var i = 0; i < codes.length; i++) {
-                winnerList.push({code: codes[i], value: values[i]});
+            if (res[0] !== "") {
+                let codes = res[0].split(",");
+                let values = res[1];
+                for (var i = 0; i < codes.length; i++) {
+                    winnerList.push({code: codes[i], value: values[i]});
+                }
             }
 
             that.setState({
@@ -884,10 +886,11 @@ class ContentPage extends Component {
                                 </div>
                                 <Divider dashed={true}/>
                                 <div>
-                                    <Descriptions >
+                                    <Descriptions>
                                         <Descriptions.Item
                                             label={<span style={{color: "#3f2908"}}>今日冠军奖池(SERO)</span>}>
-                                            <span style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
+                                            <span
+                                                style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
                                         <Descriptions.Item
                                             label={<span style={{color: "#3f2908"}}>我的排名</span>}>{
                                             index > 0 ? <span style={{color: "#3f2908"}}>第{1}名</span> :
@@ -895,8 +898,9 @@ class ContentPage extends Component {
                                         }</Descriptions.Item>
                                         <Descriptions.Item
                                             label={<span style={{color: "#3f2908"}}>我的奖金(SERO)</span>}>{
-                                            index ==0?<span style={{color: "#3f2908"}}>0.00</span>:
-                                            <span style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
+                                            index == 0 ? <span style={{color: "#3f2908"}}>0.00</span> :
+                                                <span
+                                                    style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
                                         }</Descriptions.Item>
 
                                     </Descriptions>
@@ -918,17 +922,29 @@ class ContentPage extends Component {
                             <Descriptions title={<h4
                                 style={{color: '#fff'}}>{Lang[this.state.lang].account.title.investDetail}</h4>}>
                                 <Descriptions.Item
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.id}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.id}</span></Descriptions.Item>
+                                    label={<span
+                                        style={{color: '#fff'}}>{Lang[this.state.lang].account.title.id}</span>}><span
+                                    style={{color: '#fff'}}>{this.state.ct_details.id}</span></Descriptions.Item>
                                 <Descriptions.Item style={{color: '#fff'}}
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.referId}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.referId}</span></Descriptions.Item>
+                                                   label={<span
+                                                       style={{color: '#fff'}}>{Lang[this.state.lang].account.title.referId}</span>}><span
+                                    style={{color: '#fff'}}>{this.state.ct_details.referId}</span></Descriptions.Item>
                                 <Descriptions.Item style={{color: '#fff'}}
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.areaId}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.largeAreaId}</span></Descriptions.Item>
+                                                   label={<span
+                                                       style={{color: '#fff'}}>{Lang[this.state.lang].account.title.areaId}</span>}><span
+                                    style={{color: '#fff'}}>{this.state.ct_details.largeAreaId}</span></Descriptions.Item>
                                 <Descriptions.Item style={{color: '#fff'}}
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.totalInvest}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.amount}</span></Descriptions.Item>
+                                                   label={<span
+                                                       style={{color: '#fff'}}>{Lang[this.state.lang].account.title.totalInvest}</span>}><span
+                                    style={{color: '#fff'}}>{this.state.ct_details.amount}</span></Descriptions.Item>
                                 <Descriptions.Item style={{color: '#fff'}}
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.profitLevel}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.profitLevel}</span></Descriptions.Item>
+                                                   label={<span
+                                                       style={{color: '#fff'}}>{Lang[this.state.lang].account.title.profitLevel}</span>}><span
+                                    style={{color: '#fff'}}>{this.state.ct_details.profitLevel}</span></Descriptions.Item>
                                 <Descriptions.Item style={{color: '#fff'}}
-                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.latestTime}</span>}><span style={{color: '#fff'}}>{convertUTCDate(staticTimestamp)}</span></Descriptions.Item>
+                                                   label={<span
+                                                       style={{color: '#fff'}}>{Lang[this.state.lang].account.title.latestTime}</span>}><span
+                                    style={{color: '#fff'}}>{convertUTCDate(staticTimestamp)}</span></Descriptions.Item>
                             </Descriptions>
                         </Skeleton>
                     </div>
