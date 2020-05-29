@@ -123,14 +123,14 @@ td span {
 .account-nr {
     padding: 15px 10px;
     background: #dbbf7a;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .contract-n {
     background-color: #dbbf7a;
     padding: 5px 15px;
     border-radius: 12px;
-    margin-top: 30px;
+    margin-top: 20px;
 }
 
 .contract-dn {
@@ -215,4 +215,20 @@ td span {
     border-color: #3f2908 !important;
     border-style: dashed;
     border-width: 1px 0 0;
+}
+
+.ant-btn-primary[disabled] {
+    color: #fff !important;
+}
+
+.ant-divider-horizontal {
+    display: block;
+    clear: both;
+    width: 100%;
+    min-width: 100%;
+    height: 1px;
+    margin: 16px 0 !important;
+}
+.countDown .ant-statistic-content {
+    font-size: 20px;
 }

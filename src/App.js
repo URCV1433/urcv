@@ -874,30 +874,38 @@ class ContentPage extends Component {
 
                     <div className={"contract-tn"}>
                         <div className={"contract-dn"}>
-                            <div className="trapezoid">冠军奖池</div>
+                            <div className="trapezoid">{Lang[this.state.lang].winner.title}</div>
                             <div className="contract-n">
                                 <div style={{textAlign: 'center'}}>
                                     <Row>
-                                        <Col span={8}>排名</Col>
-                                        <Col span={8}>编号</Col>
-                                        <Col span={8}>奖金</Col>
+                                        <Col span={8}>{Lang[this.state.lang].winner.ranking}</Col>
+                                        <Col span={8}>{Lang[this.state.lang].winner.code}</Col>
+                                        <Col span={8}>{Lang[this.state.lang].winner.reward}</Col>
                                     </Row>
                                     {winners}
                                 </div>
                                 <Divider dashed={true}/>
                                 <div>
+                                    <div className="countDown">
+                                        <Row style={{color: "red"}}>
+                                            <Col span={14} style={{textAlign: 'right', fontSize: '20px'}}>
+                                                <span>{Lang[this.state.lang].winner.countDown}:</span></Col>
+                                            <Col span={10}><Countdown title="" format="HH:mm:ss"
+                                                                      value={parseFloat(countDown)}/></Col>
+                                        </Row>
+                                    </div>
                                     <Descriptions>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>今日冠军奖池(SERO)</span>}>
+                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.poolValue}</span>}>
                                             <span
                                                 style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>我的排名</span>}>{
-                                            index > 0 ? <span style={{color: "#3f2908"}}>第{1}名</span> :
-                                                <span style={{color: "#3f2908"}}>无排名</span>
+                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myplace}</span>}>{
+                                            index > 0 ? <span style={{color: "#3f2908"}}>{index}</span> :
+                                                <span style={{color: "#3f2908"}}></span>
                                         }</Descriptions.Item>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>我的奖金(SERO)</span>}>{
+                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myreward}</span>}>{
                                             index == 0 ? <span style={{color: "#3f2908"}}>0.00</span> :
                                                 <span
                                                     style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
@@ -948,6 +956,9 @@ class ContentPage extends Component {
                             </Descriptions>
                         </Skeleton>
                     </div>
+                </div>
+                <div className="footer-n">
+                    <span>风险投资 谨慎参与</span>
                 </div>
 
                 <SelectAccount visible={showAccountSelect} selectAccount={this.selectAccount}

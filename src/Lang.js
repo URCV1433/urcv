@@ -80,6 +80,18 @@ class Lang {
                 },
             },
         },
+        winner :{
+            title:"冠军奖池",
+            ranking:"排名",
+            code:"编号",
+            reward:"奖金",
+            poolValue:"今日冠军奖池(SERO)",
+            myplace:"我的排名",
+            myreward:"我的奖金(SERO)",
+            countDown:"今日冠军开奖倒计时",
+            noplace:"无排名",
+
+        },
         toast: {
             lessAmount: "SERO余额不足以支付本次交易.",
             minInvest: "最小投资金额为 10 SERO.",
