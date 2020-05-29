@@ -884,18 +884,22 @@ class ContentPage extends Component {
                                 </div>
                                 <Divider dashed={true}/>
                                 <div>
-                                    <div>
-                                        <span>{"今日冠军奖池(SERO)"}</span><span>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span>
-                                    </div>
-                                    <div><span>{"我的排名"}</span>{
-                                        index > 0 ? <span>第{1}名</span> :
-                                            <span>无排名</span>
-                                    }
-                                    </div>
-                                    <div><span>{"我的奖金(SERO)"}</span>{
-                                        index > 0 &&
-                                        <span>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
-                                    }</div>
+                                    <Descriptions >
+                                        <Descriptions.Item
+                                            label={<span style={{color: "#3f2908"}}>今日冠军奖池(SERO)</span>}>
+                                            <span style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={<span style={{color: "#3f2908"}}>我的排名</span>}>{
+                                            index > 0 ? <span style={{color: "#3f2908"}}>第{1}名</span> :
+                                                <span style={{color: "#3f2908"}}>无排名</span>
+                                        }</Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={<span style={{color: "#3f2908"}}>我的奖金(SERO)</span>}>{
+                                            index ==0?<span style={{color: "#3f2908"}}>0.00</span>:
+                                            <span style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
+                                        }</Descriptions.Item>
+
+                                    </Descriptions>
                                 </div>
                             </div>
                         </div>
@@ -906,7 +910,7 @@ class ContentPage extends Component {
                             <Descriptions
                                 title={<h2 style={{color: '#fff'}}>{Lang[this.state.lang].project.title}</h2>}>
                                 <Descriptions.Item label={Lang[this.state.lang].project.contractAddress}>
-                                    <small>{ct.address}</small>
+                                    <small style={{color: '#fff'}}>{ct.address}</small>
                                 </Descriptions.Item>
                             </Descriptions>
 
@@ -914,17 +918,17 @@ class ContentPage extends Component {
                             <Descriptions title={<h4
                                 style={{color: '#fff'}}>{Lang[this.state.lang].account.title.investDetail}</h4>}>
                                 <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.id}>{this.state.ct_details.id}</Descriptions.Item>
-                                <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.referId}>{this.state.ct_details.referId}</Descriptions.Item>
-                                <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.areaId}>{this.state.ct_details.largeAreaId}</Descriptions.Item>
-                                <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.totalInvest}>{this.state.ct_details.amount}</Descriptions.Item>
-                                <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.profitLevel}>{this.state.ct_details.profitLevel}</Descriptions.Item>
-                                <Descriptions.Item
-                                    label={Lang[this.state.lang].account.title.latestTime}>{convertUTCDate(staticTimestamp)}</Descriptions.Item>
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.id}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.id}</span></Descriptions.Item>
+                                <Descriptions.Item style={{color: '#fff'}}
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.referId}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.referId}</span></Descriptions.Item>
+                                <Descriptions.Item style={{color: '#fff'}}
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.areaId}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.largeAreaId}</span></Descriptions.Item>
+                                <Descriptions.Item style={{color: '#fff'}}
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.totalInvest}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.amount}</span></Descriptions.Item>
+                                <Descriptions.Item style={{color: '#fff'}}
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.profitLevel}</span>}><span style={{color: '#fff'}}>{this.state.ct_details.profitLevel}</span></Descriptions.Item>
+                                <Descriptions.Item style={{color: '#fff'}}
+                                    label={<span style={{color: '#fff'}}>{Lang[this.state.lang].account.title.latestTime}</span>}><span style={{color: '#fff'}}>{convertUTCDate(staticTimestamp)}</span></Descriptions.Item>
                             </Descriptions>
                         </Skeleton>
                     </div>
