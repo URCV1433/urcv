@@ -671,13 +671,13 @@ class ContentPage extends Component {
         // let showCountDown = new Date(staticTimestamp * 1000).getUTCDate() === parseInt(new Date().getUTCDate());
         let showCountDown = Math.ceil((staticTimestamp * 1000) / (1200 * 1000)) === nextShareTime() / (1200 * 1000);
         let index = 0;
-        let winners = that.state.winnerList.map(function (item, index) {
+        let winners = that.state.winnerList.map(function (item, i) {
             if (item.code === that.state.ct_details.id) {
-                index = index + 1;
+                index = i + 1;
             }
             return (
                 <Row key={index}>
-                    <Col span={8}><img src={require("./URCV_li_" + (index + 1) + ".png")}
+                    <Col span={8}><img src={require("./URCV_li_" + (i + 1) + ".png")}
                                        style={{width: '30px', height: '25px'}}/></Col>
                     <Col span={8}>{item.code}</Col>
                     <Col span={8}>{new BigNumber(item.value).dividedBy(decimal).toFixed(2)}</Col>
@@ -895,18 +895,21 @@ class ContentPage extends Component {
                                         </Row>
                                     </div>
 
-                                    <Descriptions style={{paddingTop:'10px'}}>
+                                    <Descriptions style={{paddingTop: '10px'}}>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.poolValue}</span>}>
+                                            label={<span
+                                                style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.poolValue}</span>}>
                                             <span
                                                 style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myplace}</span>}>{
+                                            label={<span
+                                                style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myplace}</span>}>{
                                             index > 0 ? <span style={{color: "#3f2908"}}>{index}</span> :
                                                 <span style={{color: "#3f2908"}}></span>
                                         }</Descriptions.Item>
                                         <Descriptions.Item
-                                            label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myreward}</span>}>{
+                                            label={<span
+                                                style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.myreward}</span>}>{
                                             index == 0 ? <span style={{color: "#3f2908"}}>0.00</span> :
                                                 <span
                                                     style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerList[index - 1].value).dividedBy(decimal).toFixed(2)}</span>
