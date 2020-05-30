@@ -232,3 +232,7 @@ td span {
 .countDown .ant-statistic-content {
     font-size: 16px;
 }
+
+.countDown .ant-statistic-content .ant-statistic-content-value {
+    color:red;
+}

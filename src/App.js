@@ -894,7 +894,8 @@ class ContentPage extends Component {
                                                                       value={parseFloat(countDown)}/></Col>
                                         </Row>
                                     </div>
-                                    <Descriptions>
+
+                                    <Descriptions style={{paddingTop:'10px'}}>
                                         <Descriptions.Item
                                             label={<span style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.poolValue}</span>}>
                                             <span
