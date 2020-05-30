@@ -889,7 +889,7 @@ class ContentPage extends Component {
                                     <div className="countDown">
                                         <Row style={{color: "red"}}>
                                             <Col span={14} style={{textAlign: 'right', fontSize: '16px'}}>
-                                                <span>{Lang[this.state.lang].winner.countDown}:</span></Col>
+                                                <span>{Lang[this.state.lang].winner.countDown}&nbsp;&nbsp;&nbsp;</span></Col>
                                             <Col span={10}><Countdown title="" format="HH:mm:ss"
                                                                       value={parseFloat(countDown)}/></Col>
                                         </Row>
@@ -959,7 +959,7 @@ class ContentPage extends Component {
                     </div>
                 </div>
                 <div className="footer-n">
-                    <span>风险投资 谨慎参与</span>
+                    <span>风险投资, 风险自控</span>
                 </div>
 
                 <SelectAccount visible={showAccountSelect} selectAccount={this.selectAccount}
