@@ -1,5 +1,7 @@
 pragma solidity ^0.4.24;
 
+import "browser/strings.sol";
+
 library SafeMath {
 
     function mul(uint256 a, uint256 b) internal pure returns (uint256) {
@@ -44,7 +46,8 @@ library Utils {
     }
 
     function sameDay(uint256 day1, uint256 day2) internal pure returns (bool){
-        return day1 / 24 / 3600 == day2 / 24 / 3600;
+        // return day1 / 24 / 3600 == day2 / 24 / 3600;
+        return day1 / 1200 == day2 / 1200;
     }
 
     function bytes32Eq(bytes32 a, bytes32 b) internal pure returns (bool) {
@@ -163,11 +166,11 @@ contract SeroInterface {
 
 
 contract Config {
-    uint256 constant baron_little_total = 2e23;
-    uint256 constant earl_little_total = 4e23;
-    uint256 constant marquess_little_total = 8e23;
-    uint256 constant duke_little_total = 16e23;
-    uint256 constant vip = 38e23;
+    uint256 constant star1_little_total = 1e23;
+    uint256 constant star2_little_total = 5e23;
+    uint256 constant star3_little_total = 1e24;
+    uint256 constant star4_little_total = 3e24;
+    uint256 constant star5_little_total = 9e24;
 }
 
 contract InvestorRelationship is Config, SeroInterface {
@@ -187,9 +190,11 @@ contract InvestorRelationship is Config, SeroInterface {
         uint256 value;
         uint256 otherAchievement;
 
+        uint256 dayRecommendAmount;
+        uint256 updateTimestamp;
+
         address addr;
         uint8 star;
-        bool vip;
     }
 
     struct ReturnReward {
@@ -209,16 +214,24 @@ contract InvestorRelationship is Config, SeroInterface {
     uint256 totalShare;
     uint256 lastUpdated;
 
+    uint256 public winnerPool;
+    uint256 public preWinnerPool;
+    uint256 public preWinnersLen;
     uint256 private cash;
 
     mapping(address => uint256) indexs;
     Investor[] investors;
     ReturnReward[] returnRewards;
 
+    uint256 public winnersLen;
+    uint256[] public winners = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+    uint256[] public topSixList = [0, 0, 0, 0, 0, 0, 0];
+    uint256[] winnerRates = [50, 20, 15, 6, 5, 4];
+
     using SafeMath for uint256;
 
     constructor() public {
-        investors.push(Investor({refereeId : 0, largeAreaId : 0, amount : 0, totalAmount : 0, returnAmount : 0, achievement : 0, otherAchievement : 0, recommendAmount : 0, profitLevel : 0, addr : 0, star : 0, value : 0, vip : false}));
+        investors.push(Investor({refereeId : 0, largeAreaId : 0, amount : 0, totalAmount : 0, returnAmount : 0, achievement : 0, otherAchievement : 0, recommendAmount : 0, profitLevel : 0, addr : 0, star : 0, value : 0, dayRecommendAmount : 0, updateTimestamp : 0}));
         returnRewards.push(ReturnReward({staticReward : 0, recommendReward : 0, starReward : 0, vipReward : 0, currentStaticReward : 0, currentIncome : 0, staticTimestamp : now, updateTimestamp : 0}));
     }
 
@@ -264,7 +277,7 @@ contract InvestorRelationship is Config, SeroInterface {
         _beforeUpdate();
 
         indexs[addr] = investors.length;
-        investors.push(Investor({refereeId : refereeId, largeAreaId : 0, amount : amount, totalAmount : amount, returnAmount : 0, achievement : 0, otherAchievement : 0, recommendAmount : 0, profitLevel : 0, addr : addr, star : 0, value : 0, vip : false}));
+        investors.push(Investor({refereeId : refereeId, largeAreaId : 0, amount : amount, totalAmount : amount, returnAmount : 0, achievement : 0, otherAchievement : 0, recommendAmount : 0, profitLevel : 0, addr : addr, star : 0, value : 0, dayRecommendAmount : 0, updateTimestamp : 0}));
         returnRewards.push(ReturnReward({staticReward : 0, recommendReward : 0, starReward : 0, vipReward : 0, currentStaticReward : 0, currentIncome : 0, staticTimestamp : now, updateTimestamp : 0}));
 
         if (amount > 0) {
@@ -289,11 +302,47 @@ contract InvestorRelationship is Config, SeroInterface {
         }
     }
 
+    function topSix(uint256 id) internal {
+        if (winnersLen == 0) {
+            winnersLen = 1;
+            topSixList[0] = id;
+        } else {
+            topSixList[winnersLen] = id;
+            for (uint256 i = winnersLen; i > 0; i--) {
+                if (!Utils.sameDay(now, investors[topSixList[i - 1]].updateTimestamp) ||
+                investors[topSixList[i]].recommendAmount > investors[topSixList[i - 1]].recommendAmount) {
+                    uint256 temp = topSixList[i];
+                    topSixList[i] = topSixList[i - 1];
+                    topSixList[i - 1] = temp;
+                } else {
+                    break;
+                }
+            }
+
+            if (winnersLen < 6) {
+                winnersLen++;
+            }
+        }
+    }
+
     function _update(uint256 id, uint256 amount) internal {
 
+        winnerPool += amount / 20;
+
         uint256 currentId = investors[id].refereeId;
+
         if (currentId != 0) {
             investors[currentId].recommendAmount = investors[currentId].recommendAmount.add(amount);
+
+            if (!Utils.sameDay(now, investors[currentId].updateTimestamp)) {
+                investors[currentId].dayRecommendAmount = amount;
+                investors[currentId].updateTimestamp = now;
+            } else {
+                investors[currentId].dayRecommendAmount = investors[currentId].dayRecommendAmount.add(amount);
+            }
+            if (investors[currentId].amount != 0) {
+                topSix(currentId);
+            }
         }
 
         if (investors[id].profitLevel == 0) {
@@ -331,22 +380,23 @@ contract InvestorRelationship is Config, SeroInterface {
                 }
 
                 uint256 littleAchievement = (investors[currentId].achievement.add(investors[currentId].otherAchievement)).sub(largeAchievement);
-                if (littleAchievement >= vip) {
-                    investors[currentId].vip = true;
-                }
 
                 uint8 star;
-                if (littleAchievement >= duke_little_total) {
+                if (littleAchievement >= star5_little_total) {
+                    star = 5;
+                } else if (littleAchievement >= star4_little_total) {
                     star = 4;
-                } else if (littleAchievement >= marquess_little_total) {
+                } else if (littleAchievement >= star3_little_total) {
                     star = 3;
-                } else if (littleAchievement >= earl_little_total) {
+                } else if (littleAchievement >= star2_little_total) {
                     star = 2;
-                } else if (littleAchievement >= baron_little_total) {
+                }
+                if (littleAchievement >= star1_little_total) {
                     star = 1;
                 } else {
                     star = 0;
                 }
+
                 if (star > investors[currentId].star) {
                     investors[currentId].star = star;
                 }
@@ -359,7 +409,6 @@ contract InvestorRelationship is Config, SeroInterface {
         uint256 allProfit;
         allProfit += _recommendProfit(investors[id].refereeId, amount);
         allProfit += _starProfit(investors[id].refereeId, amount);
-        allProfit += _vipProfit(investors[id].refereeId, amount);
 
         cash = cash.add(allProfit);
         uint256 addShare = amount.mul(investors[id].profitLevel);
@@ -384,50 +433,18 @@ contract InvestorRelationship is Config, SeroInterface {
         return profit;
     }
 
-    function _vipProfit(uint256 id, uint256 amount) internal returns (uint256 allProfit) {
-        if (id == 0) {
-            return;
-        }
-
-        uint256 height;
-        uint256 profit;
-        uint256 count;
-        while (id != 0 && height < MAXHEIGHT && count < 10) {
-            if (investors[id].vip) {
-                profit = _payProfit(id, amount / 100);
-                returnRewards[id].vipReward = returnRewards[id].vipReward.add(profit);
-                allProfit += profit;
-                count++;
-            }
-            id = investors[id].refereeId;
-            height++;
-        }
-
-        return;
-    }
-
     function _starProfit0(uint256 id, uint256 amount) internal returns (uint256 allProfit) {
         uint256 height;
         uint256 rate;
 
-        while (id != 0 && height < MAXHEIGHT && rate < 12) {
+        while (id != 0 && height < MAXHEIGHT && rate < 10) {
             if (investors[id].star == 0 || investors[id].amount == 0) {
                 id = investors[id].refereeId;
                 height++;
                 continue;
             }
 
-            uint currentRate;
-            if (investors[id].star == 1) {
-                currentRate = 2;
-            } else if (investors[id].star == 2) {
-                currentRate = 4;
-            } else if (investors[id].star == 3) {
-                currentRate = 8;
-            } else if (investors[id].star == 4) {
-                currentRate = 12;
-            }
-
+            uint currentRate = 2 * investors[id].star;
             if (currentRate <= rate) {
                 id = investors[id].refereeId;
                 height++;
@@ -453,7 +470,8 @@ contract InvestorRelationship is Config, SeroInterface {
         uint256 star2;
         uint256 star3;
         uint256 star4;
-        while (id != 0 && rate < 6 && height < MAXHEIGHT) {
+        uint256 star5;
+        while (id != 0 && rate < 5 && height < MAXHEIGHT) {
             uint256 value;
             if (investors[id].star == 1 && star1 < 2 && rate < 1 && investors[id].amount != 0) {
                 star1++;
@@ -463,8 +481,7 @@ contract InvestorRelationship is Config, SeroInterface {
                     returnRewards[id].starReward = returnRewards[id].starReward.add(value);
                     rate = 1;
                 }
-            }
-            if (investors[id].star == 2 && star2 < 2 && rate < 2 && investors[id].amount != 0) {
+            } else if (investors[id].star == 2 && star2 < 2 && rate < 2 && investors[id].amount != 0) {
                 star2++;
                 if (star2 == 2) {
                     value = _payProfit(id, amount.mul(2 - rate) / 100);
@@ -472,29 +489,34 @@ contract InvestorRelationship is Config, SeroInterface {
                     returnRewards[id].starReward = returnRewards[id].starReward.add(value);
                     rate = 2;
                 }
-            }
-            if (investors[id].star == 3 && star3 < 2 && rate < 4 && investors[id].amount != 0) {
+            } else if (investors[id].star == 3 && star3 < 2 && rate < 3 && investors[id].amount != 0) {
                 star3++;
                 if (star3 == 2) {
+                    value = _payProfit(id, amount.mul(3 - rate) / 100);
+                    allProfit = allProfit.add(value);
+                    returnRewards[id].starReward = returnRewards[id].starReward.add(value);
+                    rate = 3;
+                }
+            } else if (investors[id].star == 4 && star4 < 2 && rate < 4 && investors[id].amount != 0) {
+                star4++;
+                if (star4 == 2) {
                     value = _payProfit(id, amount.mul(4 - rate) / 100);
                     allProfit = allProfit.add(value);
                     returnRewards[id].starReward = returnRewards[id].starReward.add(value);
                     rate = 4;
                 }
-            }
-            if (investors[id].star == 4 && star4 < 2 && rate < 6 && investors[id].amount != 0) {
-                star4++;
-                if (star4 == 2) {
-                    value = _payProfit(id, amount.mul(6 - rate) / 100);
+            } else if (investors[id].star == 5 && star5 < 2 && rate < 5 && investors[id].amount != 0) {
+                star5++;
+                if (star5 == 2) {
+                    value = _payProfit(id, amount.mul(5 - rate) / 100);
                     allProfit = allProfit.add(value);
                     returnRewards[id].starReward = returnRewards[id].starReward.add(value);
-                    rate = 6;
+                    rate = 5;
                 }
             }
             id = investors[id].refereeId;
             height++;
         }
-
     }
 
     function _starProfit(uint256 id, uint256 amount) internal returns (uint256 allProfit) {
@@ -517,21 +539,16 @@ contract InvestorRelationship is Config, SeroInterface {
         uint256 secondId = investors[firstId].refereeId;
 
         if (secondId != uint256(0)) {
-            allProfit += _caleRecommendProfit(secondId, amount, 6);
+            allProfit += _caleRecommendProfit(secondId, amount, 7);
 
-            uint256 threeId = investors[secondId].refereeId;
-            if (threeId != uint256(0)) {
-                allProfit += _caleRecommendProfit(threeId, amount, 5);
-
-                uint256 layer = 4;
-                uint256 id = investors[threeId].refereeId;
-                while (id != uint256(0) && layer <= 6) {
-                    if (SafeMath.div(investors[id].recommendAmount, 1e22) > layer || investors[id].totalAmount >= 1e23) {
-                        allProfit += _caleRecommendProfit(id, amount, 1);
-                    }
-                    id = investors[id].refereeId;
-                    layer += 1;
+            uint256 layer = 3;
+            uint256 id = investors[secondId].refereeId;
+            while (id != uint256(0) && layer <= 12) {
+                if (SafeMath.div(investors[id].recommendAmount, 1e22) >= layer || investors[id].totalAmount >= 1e23) {
+                    allProfit += _caleRecommendProfit(id, amount, 1);
                 }
+                id = investors[id].refereeId;
+                layer += 1;
             }
         }
         return allProfit;
@@ -552,12 +569,32 @@ contract InvestorRelationship is Config, SeroInterface {
         if (!Utils.sameDay(now, lastUpdated)) {
             preRewardAmount = _balanceOfSero() / 30;
             preTotalShare = totalShare;
+
+            preWinnersLen = winnersLen;
+            preWinnerPool = winnerPool;
+            if (winnersLen > 0) {
+                uint256 winnerProfit = winnerPool / 10;
+
+                uint256 allProfit;
+                for (uint256 i = 0; i < winnersLen; i++) {
+                    uint256 profit = _payProfit(topSixList[i], winnerProfit.mul(winnerRates[i]) / 100);
+                    returnRewards[topSixList[i]].vipReward += profit;
+                    allProfit += profit;
+                    winners[i * 2] = topSixList[i];
+                    winners[i * 2 + 1] = profit;
+                }
+
+                winnerPool = winnerPool - allProfit;
+                winnersLen = 0;
+                cash = SafeMath.add(cash, allProfit);
+            }
+
             lastUpdated = now;
         }
     }
 
     function _balanceOfSero() internal view returns (uint256){
-        return sero_balanceOf("SERO").sub(cash);
+        return sero_balanceOf("SERO").sub(cash).sub(winnerPool);
     }
 
     function _payProfit(uint id, uint256 amount) internal returns (uint256) {
@@ -594,7 +631,7 @@ contract InvestorRelationship is Config, SeroInterface {
     }
 
     function _profitLevel(uint256 amount) internal pure returns (uint256) {
-        if (amount < 1e21) {
+        if (amount < 5e20) {
             return 3;
         } else if (amount < 5e21) {
             return 4;
@@ -634,7 +671,7 @@ interface CodeService {
     function decode(string code) external view returns (uint);
 }
 
-contract Fero is InvestorRelationship, Ownable {
+contract Urcv is InvestorRelationship, Ownable {
     using SafeMath for uint256;
     string private constant SERO_CURRENCY = "SERO";
 
@@ -643,24 +680,9 @@ contract Fero is InvestorRelationship, Ownable {
     CodeService private codeService;
 
     address[] marketAddrs;
-    mapping(address => uint256) weights;
 
     constructor(address _codeServiceAddr) public {
         codeService = CodeService(_codeServiceAddr);
-    }
-
-    function setWeight(address addr, uint256 weight) public onlyOwner {
-        require(weight < 11);
-        bool flag;
-        for (uint256 i = 0; i < marketAddrs.length; i++) {
-            if (marketAddrs[i] == addr) {
-                flag = true;
-            }
-        }
-        if (!flag) {
-            marketAddrs.push(addr);
-        }
-        weights[addr] = weight;
     }
 
     function setTriggerStaticNum(uint256 _triggerStaticNum) public onlyOwner {
@@ -681,6 +703,18 @@ contract Fero is InvestorRelationship, Ownable {
         return index != 0 && index < investors.length;
     }
 
+    function winnerList() public view returns (string, uint256[], uint256) {
+
+        strings.slice[] memory parts = new strings.slice[](preWinnersLen);
+        uint256[] memory vlues = new uint256[](preWinnersLen);
+        for (uint256 i = 0; i < preWinnersLen; i++) {
+            parts[i] = strings.toSlice(codeService.encode(uint64(winners[i * 2])));
+            vlues[i] = winners[i * 2 + 1];
+        }
+        return (strings.join(strings.toSlice(","), parts), vlues, preWinnerPool);
+    }
+
+
     function details() public view
     returns (string, string, uint256, uint256, uint256, uint256, uint256, uint256, uint256, uint8, bool, uint256)  {
         Investor memory i = findByAddr(msg.sender);
@@ -689,11 +723,10 @@ contract Fero is InvestorRelationship, Ownable {
             largeAchievement = investors[i.largeAreaId].achievement.add(investors[i.largeAreaId].totalAmount);
         }
 
-        return (codeService.encode(uint64(i.refereeId)), codeService.encode(uint64(i.largeAreaId)), largeAchievement, i.amount, i.returnAmount, i.achievement, i.recommendAmount, i.profitLevel, i.value, i.star, i.vip, i.totalAmount);
+        return (codeService.encode(uint64(i.refereeId)), codeService.encode(uint64(i.largeAreaId)), largeAchievement, i.amount, i.returnAmount, i.achievement, i.recommendAmount, i.profitLevel, i.value, i.star, false, i.totalAmount);
     }
 
     function detailsOfIncome() public view returns (uint256, uint256, uint256, uint256, uint256, uint256){
-
         uint256 index = getIndexByAddr(msg.sender);
         uint256 currentIncome;
         if (Utils.sameDay(returnRewards[index].updateTimestamp, now)) {
@@ -715,7 +748,6 @@ contract Fero is InvestorRelationship, Ownable {
         insert(0, 0, addr);
     }
 
-
     function triggerStaticProfit() public {
         uint256 index = getIndexByAddr(msg.sender);
         require(index != 0);
@@ -734,12 +766,11 @@ contract Fero is InvestorRelationship, Ownable {
         return _payStaticProfit(index);
     }
 
-
     function invest(string memory refereeCode) public payable returns (bool){
         require(Utils._stringEq(SERO_CURRENCY, sero_msg_currency()));
         require(!Utils.isContract(msg.sender));
 
-        require(msg.value >= 1e20);
+        require(msg.value >= 1e19);
 
         uint256 index = getIndexByAddr(msg.sender);
         if (index == 0) {
@@ -748,10 +779,6 @@ contract Fero is InvestorRelationship, Ownable {
             insert(refereeId, msg.value, msg.sender);
         } else {
             update(index, msg.value);
-        }
-
-        for (uint256 i = 0; i < marketAddrs.length; i++) {
-            require(sero_send_token(marketAddrs[i], SERO_CURRENCY, msg.value.mul(weights[marketAddrs[i]]).div(100)));
         }
 
         return true;
