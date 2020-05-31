@@ -877,7 +877,7 @@ class ContentPage extends Component {
                             <div className="trapezoid">{Lang[this.state.lang].winner.title}</div>
                             <div className="contract-n">
                                 <div style={{textAlign: 'center'}}>
-                                    <Row>
+                                    <Row key={"title"}>
                                         <Col span={8}>{Lang[this.state.lang].winner.ranking}</Col>
                                         <Col span={8}>{Lang[this.state.lang].winner.code}</Col>
                                         <Col span={8}>{Lang[this.state.lang].winner.reward}</Col>
