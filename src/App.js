@@ -183,6 +183,7 @@ class ContentPage extends Component {
             lang: "zh_CN",
             winnerList: [],
             winnerPool: 0,
+            preWinnerPool: 0,
         }
     }
 
@@ -323,6 +324,7 @@ class ContentPage extends Component {
 
             that.setState({
                 winnerList: winnerList,
+                preWinnerPool:res[3],
                 winnerPool: res[2]
             })
         });
@@ -899,6 +901,11 @@ class ContentPage extends Component {
                                         <Descriptions.Item
                                             label={<span
                                                 style={{color: "#3f2908"}}>{Lang[this.state.lang].winner.poolValue}</span>}>
+                                            <span
+                                                style={{color: "#3f2908"}}>{new BigNumber(this.state.preWinnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
+                                        <Descriptions.Item
+                                            label={<span
+                                                style={{color: "#3f2908"}}>今日冠军奖池(SERO)</span>}>
                                             <span
                                                 style={{color: "#3f2908"}}>{new BigNumber(this.state.winnerPool).dividedBy(decimal).toFixed(2)}</span></Descriptions.Item>
                                         <Descriptions.Item
