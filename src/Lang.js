@@ -85,7 +85,7 @@ class Lang {
             ranking:"排名",
             code:"编号",
             reward:"奖金",
-            poolValue:"昨日冠军池(SERO)",
+            poolValue:"昨日冠军奖池(SERO)",
             myplace:"我的排名",
             myreward:"我的奖金(SERO)",
             countDown:"今日冠军开奖倒计时",

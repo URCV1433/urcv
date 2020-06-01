@@ -324,8 +324,8 @@ class ContentPage extends Component {
 
             that.setState({
                 winnerList: winnerList,
-                preWinnerPool:res[3],
-                winnerPool: res[2]
+                preWinnerPool:res[2],
+                winnerPool: res[3]
             })
         });
     }
