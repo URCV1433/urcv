@@ -681,7 +681,7 @@ class ContentPage extends Component {
                 <Row key={i}>
                     <Col span={8}><img src={require("./URCV_li_" + (i + 1) + ".png")}
                                        style={{width: '30px', height: '25px'}}/></Col>
-                    <Col span={8}>{item.code}</Col>
+                    <Col span={8}>{item.code.slice(0,5)+".."+item.code.slice(-5)}</Col>s
                     <Col span={8}>{new BigNumber(item.value).dividedBy(decimal).toFixed(2)}</Col>
                 </Row>
             )
@@ -692,6 +692,14 @@ class ContentPage extends Component {
                 <div className="content-n">
                     <div className="header-n">
                         <img src={Head} width={"100%"}/>
+                        <span style={{
+                            float: "left",
+                            padding: "15px",
+                            position: "relative",
+                            top: "-200px",
+                            color: "#f3ba44",
+                            fontWeight: "600"
+                        }} onClick={this.showRules.bind(this)}>{Lang[this.state.lang].project.rule}</span>
                     </div>
                     <div className="account-n">
                         <div className="trapezoid">{Lang[this.state.lang].account.title.utxo}</div>

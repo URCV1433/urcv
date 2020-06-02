@@ -128,7 +128,7 @@ class Lang {
 5.技术占股6% 
 6.系统开源，数据上链，代码写定，去中心化记账，没有后门，不可篡改，自动运行，自动分发。
 7.系统公开合约规则及默认推荐码，玩家可在无推荐人的情况下主动参与。
-8.开源代码查询地址：https://gitee.com/add-plus/add`,
+8.开源代码查询地址：https://github.com/URCV1433/urcv`,
         }
     };
 
@@ -272,8 +272,7 @@ Five Star          In addition to the largest direct sales performance, the tota
 5. Technology Services holds 7%
 6. The system is open source, data is on-chain, code is written, decentralized accounting, no backdoor, cannot be tampered, automatic operation, automatic distribution.
 7. The system shows contract rules and default recommendation codes, and players can actively participate without a referrer.
-8. Open Source Code: 
-9. Default Referral Code:
+8. Open Source Code: https://github.com/URCV1433/urcv.
 `,
         },
     }
@@ -428,8 +427,7 @@ c) Когда результаты прямых доходов от рефера
 6. Система с открытым исходным кодом, данные находятся в цепочке, код написан, децентрализованный учет, нет бэкдора, не может быть взломан, автоматическая работа, автоматическое распространение.
 
 7. Система показывает правила контракта и коды рекомендаций по умолчанию, и игроки могут активно участвовать без реферера.\`
-8. Откройте исходный код:
-9. Код реферала по умолчанию:`,
+8. Откройте исходный код:https://github.com/URCV1433/urcv`,
         }
     };
 
@@ -586,8 +584,7 @@ a) 1 단계 추천 수익의 10 %와 2 단계 수입의 7%를 영구적으로 �
 5. 기술 서비스는 7 %를 보유합니다
 6. 시스템은 오픈 소스이고, 데이터는 온 체인이며, 코드가 작성되며, 분산 된 회계, 백도어는없고, 조작 할 수 없으며, 자동 조작, 자동 배포가 가능합니다.
 7. 시스템은 계약 규칙과 기본 추천 코드를 보여 주며, 플레이어는 리퍼러없이 적극적으로 참여할 수 있습니다.
-8. 오픈 소스 코드:
-9. 기본 추천 코드:`,
+8. 오픈 소스 코드:https://github.com/URCV1433/urcv`,
         }
     };
 
@@ -748,8 +745,7 @@ a）第1レベルの紹介の収益の10％、第2レベルの紹介の7％を�
 5.テクノロジーサービスは7％
 6.システムはオープンソースで、データはチェーン上にあり、コードは記述され、分散会計、バックドアなし、改ざんできない、自動操作、自動配布。
 7.システムには契約ルールとデフォルトの推奨コードが表示され、プレーヤーはリファラーなしで積極的に参加できます。
-8.オープンソースコード：
-9.デフォルトの紹介コード：`,
+8.オープンソースコード：https://github.com/URCV1433/urcv`,
         }
     };
 }
