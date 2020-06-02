@@ -619,6 +619,10 @@ class ContentPage extends Component {
             icon: "",
             content: <div>
                 <span style={{'whiteSpace': 'pre-wrap', color: "#FFFFFF"}}>{Lang[that.state.lang].toast.rule}</span>
+                <a className='copyTxt' onClick={() => {
+                    copy("IFVUSKIRFSIDF");
+                    message.success('Copy to clipboard successfully');
+                }}>{Lang[this.state.lang].account.modal.deposit.copy}</a>
                 <br/>
             </div>
         })
