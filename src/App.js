@@ -674,8 +674,8 @@ class ContentPage extends Component {
             returnPercent = (a * 100 / parseFloat(b)).toFixed(2);
         }
 
-        // let showCountDown = new Date(staticTimestamp * 1000).getUTCDate() === parseInt(new Date().getUTCDate());
-        let showCountDown = Math.ceil((staticTimestamp * 1000) / (1200 * 1000)) === nextShareTime() / (1200 * 1000);
+        let showCountDown = new Date(staticTimestamp * 1000).getUTCDate() === parseInt(new Date().getUTCDate());
+        // let showCountDown = Math.ceil((staticTimestamp * 1000) / (1200 * 1000)) === nextShareTime() / (1200 * 1000);
         let rank = 0;
         let winners = that.state.winnerList.map((item, i) => {
             if (item.code === that.state.ct_details.id) {
@@ -685,7 +685,7 @@ class ContentPage extends Component {
                 <Row key={i}>
                     <Col span={8}><img src={require("./URCV_li_" + (i + 1) + ".png")}
                                        style={{width: '30px', height: '25px'}}/></Col>
-                    <Col span={8}>{item.code.slice(0,5)+".."+item.code.slice(-5)}</Col>s
+                    <Col span={8}>{item.code.slice(0,5)+".."+item.code.slice(-5)}</Col>
                     <Col span={8}>{new BigNumber(item.value).dividedBy(decimal).toFixed(2)}</Col>
                 </Row>
             )
@@ -1102,19 +1102,15 @@ function convertUTCDate(dateTimestamp) {
 
 function nextShareTime() {
     let d = new Date();
-    // d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
-    // let year = d.getUTCFullYear();
-    // let month = d.getUTCMonth();
-    // let day = d.getUTCDate();
-    //
-    // d = new Date(year, month, day, 0, 0, 0);
-    //
-    // let tz = new Date().getTimezoneOffset() / 60;
-    // return d.getTime() + (-tz) * 60 * 60 * 1000;
+    d.setTime(d.getTime() + 24 * 60 * 60 * 1000);
+    let year = d.getUTCFullYear();
+    let month = d.getUTCMonth();
+    let day = d.getUTCDate();
 
-    let time = d.getTime() + 1200 * 1000;
-    time = time - time % (1200 * 1000);
-    return time;
+    d = new Date(year, month, day, 0, 0, 0);
+
+    let tz = new Date().getTimezoneOffset() / 60;
+    return d.getTime() + (-tz) * 60 * 60 * 1000;
 }
 
 function appendZero(i) {
